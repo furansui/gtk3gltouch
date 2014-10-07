@@ -1,3 +1,6 @@
 [submodule "glx"]
 	path = glx
 	url = git@github.com:furansui/tegtkgl.git
+[submodule "pythongtktouch"]
+	path = pythongtktouch
+	url = https://gist.github.com/furansui/e3e1e8055efe2facf17c
