@@ -1,0 +1,3 @@
+[submodule "glx"]
+	path = glx
+	url = git@github.com:furansui/tegtkgl.git
