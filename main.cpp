@@ -1,17 +1,43 @@
-/* gtk3 touch source:
- * http://vbkaisetsu.sky-air.net/wordpress/2012/03/gtk-3-4-%E3%81%AE%E3%82%BF%E3%83%83%E3%83%81%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E3%82%92%E8%A9%A6%E3%81%99/
- * 
+/* run opengl with multi touch in gtk3
  */
 
 #include <gtk/gtk.h>
+#include <iostream>
+using namespace std;
+
+gboolean on_touch(GtkWidget *widget, GdkEventTouch *event) {
+  switch(event->type) {
+  case GDK_TOUCH_BEGIN:
+    cout << "Touch begin" << endl;
+    break;
+  case GDK_TOUCH_UPDATE:
+    cout << "Touch update" << endl;
+    break;
+  case GDK_TOUCH_END:
+    cout << "Touch end" << endl;
+    break;
+  case GDK_TOUCH_CANCEL:
+    cout << "Touch cancel" << endl;
+    break;
+  default:
+    cout << "Unknown touch type " << endl;
+  }
+  return false;
+}
+
 
 int main(int argc, char *argv[]) {
+  //create window
   GtkWidget *window;
   gtk_init(&argc, &argv);
   window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
 
+  //touch signal and set event
+  g_signal_connect(window, "touch-event", G_CALLBACK(on_touch), NULL);
+  gtk_widget_set_events(window, GDK_TOUCH_MASK);
+
+  //show window and run
   gtk_widget_show(window);
   gtk_main();
-
   return 0;
 }

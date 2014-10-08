@@ -3,7 +3,8 @@ SOURCES=main.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=hello
 
-USEGTKMM=1
+#USEGTKMM=1
+USEGTK3=1
 
 ifdef USEGTKMM
 CFLAGS += `pkg-config gtkmm-2.4 --cflags`
