@@ -1,3 +1,4 @@
+// g++ geistest.cpp -o geistest.xps0 -fpermissive -lgeis -lxcb
 /**
  * geistest.c Demo code for programming against the geis interface.
  *
@@ -264,6 +265,10 @@ subscribe_window(uint32_t window_id)
   return instance;
 }
 
+static int num_children;
+static xcb_window_t *children;
+static xcb_query_tree_cookie_t tree_cookie;
+static xcb_query_tree_reply_t *tree_reply;
 
 static size_t
 subscribe_windows_preorder(xcb_connection_t *xcb,
@@ -285,21 +290,21 @@ subscribe_windows_preorder(xcb_connection_t *xcb,
   }
 
   xcb_generic_error_t *error;
-  xcb_query_tree_cookie_t tree_cookie = xcb_query_tree(xcb, window);
-  xcb_query_tree_reply_t *tree_reply = xcb_query_tree_reply(xcb,
-                                                            tree_cookie,
-                                                            &error);
+  tree_cookie = xcb_query_tree(xcb, window);
+  tree_reply = xcb_query_tree_reply(xcb,
+				    tree_cookie,
+				    &error);
   if (!tree_reply)
   {
     fprintf(stderr, "failed to query tree for window 0x%x\n", window);
     goto error_exit;
   }
 
-  int num_children = xcb_query_tree_children_length(tree_reply);
+  num_children = xcb_query_tree_children_length(tree_reply);
   if (num_children <= 0)
     goto tree_exit;
 
-  xcb_window_t *children = xcb_query_tree_children(tree_reply);
+  children = xcb_query_tree_children(tree_reply);
   if (!children)
   {
     fprintf(stderr, "failed to retrieve children of window 0x%x\n", window);

@@ -1,4 +1,5 @@
 //http://people.canonical.com/~stephenwebb/geis-v2-api/geis2_8c-example.html
+//g++ geiss.cpp -o geiss.xps0 -fpermissive -lgeis
 
 #include <errno.h>
 #include <geis/geis.h>
