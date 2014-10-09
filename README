@@ -15,9 +15,13 @@ references:
     o glx: https://github.com/andrepiske/tegtkgl
     o glx: http://www.gtkforums.com/viewtopic.php?f=3&t=178803
 - gesture
+  - ginn
+    o uses geis (geissTry.cpp working base on this)
+      - uses geisInstance
   - geis -- not showing any gesture
     x http://utouch-geis.sourcearchive.com/documentation/2.0.10-0ubuntu1/geistest_8c_source.html
     x geisExample: http://people.canonical.com/~stephenwebb/geis-v2-api/geis2_8c-example.html    
+      - uses geis
   - libgrip -- official example not responding at all...?
     x official example: https://launchpad.net/libgrip
     x Darxen: https://github.com/darxen/Darxen
