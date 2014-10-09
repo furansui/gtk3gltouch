@@ -108,7 +108,13 @@ int main(int argc, char**argv) {
     return 1;
   }
 
-  status = geis_subscribe(instance, GEIS_ALL_INPUT_DEVICES, GEIS_ALL_GESTURES, &gesture_funcs, NULL);
+  char* gestures_list[20] = {NULL};
+  gestures_list[0] = (char*)malloc(sizeof(char[16]));
+  sprintf(gestures_list[0],"Drag,touch=2");
+  gestures_list[1] = (char*)malloc(sizeof(char[16]));
+  sprintf(gestures_list[1],"Pinch,touch=2");
+
+  status = geis_subscribe(instance, GEIS_ALL_INPUT_DEVICES, (const char**)gestures_list, &gesture_funcs, NULL);
   if (status != GEIS_STATUS_SUCCESS) {
     fprintf(stderr, "error subscribing to gestures\n");
     return 1;
