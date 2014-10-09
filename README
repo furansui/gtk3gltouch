@@ -13,6 +13,7 @@ references:
       https://github.com/tdz/gtkglext
   - gtk3
     - glx: https://github.com/andrepiske/tegtkgl
+<<<<<<< HEAD
     - glx: http://www.gtkforums.com/viewtopic.php?f=3&t=178803
 - gesture
   - geis
@@ -21,3 +22,6 @@ references:
       - from http://people.canonical.com/~stephenwebb/geis-v2-api/geis2_8c-example.html
   - libgrip
     - Darxen: https://github.com/darxen/Darxen
+=======
+    - glx: http://www.gtkforums.com/viewtopic.php?f=3&t=178803
+>>>>>>> parent of 9838be3... move geis sample as submodule, update README
