@@ -2,22 +2,22 @@ notes to enable gl with multi touch in gtk3
 
 references:
 - python and gtk and touch
-  - https://gist.github.com/chergert/4344205
+  o https://gist.github.com/chergert/4344205
 - gtk3 and touch
-  - http://vbkaisetsu.sky-air.net/wordpress/2012/03/gtk-3-4-%E3%81%AE%E3%82%BF%E3%83%83%E3%83%81%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E3%82%92%E8%A9%A6%E3%81%99/
+  o http://vbkaisetsu.sky-air.net/wordpress/2012/03/gtk-3-4-%E3%81%AE%E3%82%BF%E3%83%83%E3%83%81%E3%82%A4%E3%83%99%E3%83%B3%E3%83%88%E3%82%92%E8%A9%A6%E3%81%99/
 - gtk and gl
   - gtk2
-    - gtkglarea
+    o gtkglarea
       https://github.com/GNOME/gtkglarea
-    - gtkglext
+    o gtkglext
       https://github.com/tdz/gtkglext
   - gtk3
-    - glx: https://github.com/andrepiske/tegtkgl
-    - glx: http://www.gtkforums.com/viewtopic.php?f=3&t=178803
+    o glx: https://github.com/andrepiske/tegtkgl
+    o glx: http://www.gtkforums.com/viewtopic.php?f=3&t=178803
 - gesture
-  - geis
-    - http://utouch-geis.sourcearchive.com/documentation/2.0.10-0ubuntu1/geistest_8c_source.html
-    - geisExample: http://people.canonical.com/~stephenwebb/geis-v2-api/geis2_8c-example.html
-  - libgrip
-    - Darxen: https://github.com/darxen/Darxen
-    - glx: http://www.gtkforums.com/viewtopic.php?f=3&t=178803
+  - geis -- not showing any gesture
+    x http://utouch-geis.sourcearchive.com/documentation/2.0.10-0ubuntu1/geistest_8c_source.html
+    x geisExample: http://people.canonical.com/~stephenwebb/geis-v2-api/geis2_8c-example.html    
+  - libgrip -- official example not responding at all...?
+    x official example: https://launchpad.net/libgrip
+    x Darxen: https://github.com/darxen/Darxen

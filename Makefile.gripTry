@@ -1,5 +1,6 @@
 CC=g++
-SOURCES=gripTry.cpp
+SOURCES=gripOfficial.cpp
+#gripTry.cpp
 OBJECTS=$(SOURCES:.cpp=.o)
 EXECUTABLE=gripTry
 
