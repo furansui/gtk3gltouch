@@ -4,3 +4,6 @@
 [submodule "pythongtktouch"]
 	path = pythongtktouch
 	url = https://gist.github.com/furansui/e3e1e8055efe2facf17c
+[submodule "geisExample"]
+	path = geisExample
+	url = https://github.com/furansui/geis-examples.git
