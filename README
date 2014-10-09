@@ -17,6 +17,7 @@ references:
 - gesture
   - geis
     - http://utouch-geis.sourcearchive.com/documentation/2.0.10-0ubuntu1/geistest_8c_source.html
-    - https://github.com/twm/geis-examples
+    - geisExample: https://github.com/twm/geis-examples
+      - from http://people.canonical.com/~stephenwebb/geis-v2-api/geis2_8c-example.html
   - libgrip
     - Darxen: https://github.com/darxen/Darxen
