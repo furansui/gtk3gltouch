@@ -74,52 +74,25 @@ GeisGestureFuncs gestureFuncs = {
 
 
 class Spinner:public helium::Thread{
-  void run(){
-    while(1) {
-      int fd;
-      fd_set read_fds;
-      FD_ZERO(&read_fds);
-      FD_SET(fd, &read_fds);
-      int sstat = select(fd + 1, &read_fds, NULL, NULL, NULL);
-      if (sstat < 0) {
-	fprintf(stderr, "error %d in select(): %s\n", errno, strerror(errno));
-	break;
-      }     
-    }
-  }
-};
-
-class HelloWorld : public Gtk::Window {
-public:
-  HelloWorld():
-    label("Hello"),
-    status(GEIS_UNKNOWN_ERROR)
-  {
-    v.pack_start(label);
-    add(v);
-    show_all_children();
-    show();
-
-    setGeis();
-  }
-
-protected:
-  //Member widgets:
-  Gtk::Label label;
-  Gtk::VBox v;
-
+  bool &shouldExit;
   GeisXcbWinInfo xcb_win_info;
   GeisWinInfo win_info;
   GeisStatus status;
   GeisInstance instance;
+  int fd;
   char* gesturesList[20];
-  Spinner spin;
-  void setGeis() {
+public:  
+  Spinner(bool &pshouldExit):
+    shouldExit(pshouldExit),
+    status(GEIS_UNKNOWN_ERROR)
+  {
+  }
+  void setGeis(Window w) {
     //window info
     xcb_win_info = {
       .display_name = NULL,
       .screenp = NULL,
-      .window_id = GDK_WINDOW_XID(this->get_window()->gobj())
+      .window_id = w
     };
     win_info = {
       GEIS_XCB_FULL_WINDOW,
@@ -138,7 +111,6 @@ protected:
       throw;
     }
     
-    int fd = -1;
     status =
       geis_configuration_get_value(instance, GEIS_CONFIG_UNIX_FD, &fd);
     if (status != GEIS_STATUS_SUCCESS) {
@@ -159,25 +131,64 @@ protected:
       throw;
     }
 
-    /*     
-    while(1) {
-    fd_set read_fds;
-    FD_ZERO(&read_fds);
-    FD_SET(fd, &read_fds);
-    int sstat = select(fd + 1, &read_fds, NULL, NULL, NULL);
-    if (sstat < 0) {
-      fprintf(stderr, "error %d in select(): %s\n", errno, strerror(errno));
-      break;
-      }
-    
-    if (FD_ISSET(fd, &read_fds)) {
-      geis_event_dispatch(instance);
-      }       
-      }
-    */
-
-    spin.start();
+    start();
   }
+  void run(){
+    while(1) {
+      fd_set read_fds;
+      FD_ZERO(&read_fds);
+      FD_SET(fd, &read_fds);
+      int sstat = select(fd + 1, &read_fds, NULL, NULL, NULL);
+      if (sstat < 0) {
+	fprintf(stderr, "error %d in select(): %s\n", errno, strerror(errno));
+	break;
+      }     
+
+      if(shouldExit) {
+	cout << "exiting thread" << endl;
+	break;
+      }
+      cout << ".";
+
+      if (FD_ISSET(fd, &read_fds)) {
+	geis_event_dispatch(instance);
+      }       
+    }//while
+    geis_finish(instance);
+  }
+};
+
+class HelloWorld : public Gtk::Window {
+public:
+  HelloWorld():
+    label("Hello"),
+    shouldExit(false),
+    spin(shouldExit)
+  {
+    v.pack_start(label);
+    add(v);
+    show_all_children();
+    show();
+    cout << "initialize 0x" << std::hex << GDK_WINDOW_XID(this->get_window()->gobj()) << endl;
+
+    signal_hide().connect(sigc::mem_fun(*this,&HelloWorld::onExit));
+
+    spin.setGeis(GDK_WINDOW_XID(this->get_window()->gobj()));
+  }
+
+private:
+  //Member widgets:
+  Gtk::Label label;
+  Gtk::VBox v;
+  
+  Spinner spin;
+  bool shouldExit;
+
+  void onExit() {
+    cout << "window is exiting" << endl;
+    shouldExit = true;
+  }
+
 };
 
 
