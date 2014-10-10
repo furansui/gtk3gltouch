@@ -1,0 +1,75 @@
+EXECUTABLE=gtk2geis
+
+#make sure OPATH is the top folder of other sources
+OPATH=/home/fransiska/Dropbox/research/program/gtk3gltouch
+PPATH=/home/fransiska/research/software/src
+OBJECTDIR=/home/fransiska/Dropbox/research/program/gtk3gltouch/obj
+
+#define sources
+SOURCESLIB=$(HELIUM)/thread/thread.cpp $(HELIUM)/thread/mutex.cpp $(HELIUM)/thread/semaphore.cpp $(HELIUM)/core/exception.cpp $(HELIUM)/debug/trace.cpp $(HELIUM)/util/mout.cpp
+SOURCES=gtk2geis.cpp $(SOURCESLIB)
+HELIUM=$(PPATH)/helium
+
+#libraries
+USEGTKMM=1
+USEGEIS=1
+
+#do not edit ###################################################
+
+#define sources
+SOURCESR=$(realpath $(SOURCES)) #sources full path
+SOURCESO=$(SOURCESR:.cpp=.o)
+
+#define objects for PPATH
+#1 source which contains PPATH
+#2 objects based on source path
+#3 replace PPATH to objectdir
+PPATHSRC=$(shell ls $(SOURCES) | grep $(PPATH))
+PPATHSRCO=$(PPATHSRC:.cpp=.o)
+PPATHOBJ=$(subst $(PPATH),$(OBJECTDIR)/ppath,$(PPATHSRCO))
+
+#define objects outside PPATH
+#1 source other than PPATHSRC
+#2 objects based on source path
+#3 replace OPATH to actual objectdir
+OPATHSRC=$(filter-out $(PPATHSRC),$(SOURCESR))
+OPATHSRCO=$(OPATHSRC:.cpp=.o)
+OPATHOBJ=$(subst $(OPATH),$(OBJECTDIR),$(OPATHSRCO))
+
+OBJECTS=$(OPATHOBJ) $(PPATHOBJ)
+
+#flags
+CC=g++
+CFLAGS=-I$(PPATH)
+
+ifdef USEGTKMM
+CFLAGS+=`pkg-config gtkmm-2.4 --cflags`
+LFLAGS+=`pkg-config gtkmm-2.4 --libs` -lgthread-2.0 
+endif
+
+ifdef USEGEIS
+LFLAGS+=-lgeis
+endif
+
+LFLAGS+=-g -lpthread
+
+all: $(EXECUTABLE)
+
+$(EXECUTABLE): $(OBJECTS)
+	$(CC) -o $@.$(shell uname -n) $^ $(LFLAGS)
+
+$(OBJECTDIR)/%.o: $(OPATH)/%.cpp
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -g -c -o $@ $<
+	$(CC) -MM $(CFLAGS) $< -MF $(@:.o=.d) -MT $@
+
+$(OBJECTDIR)/ppath/%.o: $(PPATH)/%.cpp
+	@mkdir -p $(@D)
+	$(CC) $(CFLAGS) -g -c -o $@ $<
+	$(CC) -MM $(CFLAGS) $< -MF $(@:.o=.d) -MT $@
+
+clean:
+	rm -f $(OBJECTS) $(OBJECTS:.o=.d) $(EXECUTABLE).$(shell uname -n)
+
+
+-include $(OBJECTS:.o=.d)
